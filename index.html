@@ -3,135 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VEP 103 Language Portal</title>
+<title>Unit 2</title>
+<!-- Tailwind for Styling -->
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-.fade-in { animation: fadeIn 0.3s ease-out forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.tab-active { background-color: #4f46e5; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+.animate-in { animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Audio & Mic States */
-.audio-loading { opacity: 0.5; pointer-events: none; cursor: wait; }
-.audio-playing { color: #4f46e5 !important; animation: bounce 0.5s infinite alternate; }
-@keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-3px); } }
-.mic-active { background-color: #ef4444 !important; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+.mic-active {
+animation: pulse-red 1.2s infinite;
+color: white !important;
+background-color: #ef4444 !important;
+border-color: #dc2626 !important;
+}
 
-/* Practice Chat Styling */
-.practice-row { transition: all 0.3s ease; border-radius: 1.5rem; }
-.row-active { transform: scale(1.02); z-index: 10; ring: 2px solid #4f46e5; }
-.row-inactive { opacity: 0.4; filter: grayscale(50%); }
-
-#audio-unlock-overlay { backdrop-filter: blur(8px); }
-#practice-table { scroll-behavior: smooth; }
+@keyframes pulse-red {
+0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
 </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-900 overflow-x-hidden">
+<body class="bg-slate-50 text-slate-900 min-h-screen p-4 md:p-8">
 
-<!-- Interaction Shield -->
-<div id="audio-unlock-overlay" class="fixed inset-0 z-[100] bg-slate-900/60 flex items-center justify-center p-6 transition-opacity duration-500">
-<div class="bg-white rounded-[2rem] p-10 max-w-sm w-full text-center shadow-2xl">
-<div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-<i data-lucide="headphones" class="w-10 h-10 text-indigo-600"></i>
-</div>
-<h2 class="text-2xl font-black mb-2 text-slate-800">Ready to start?</h2>
-<p class="text-slate-500 text-sm mb-8">Tap to enable audio and microphone for your practice session.</p>
-<button onclick="initApp()" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 active:scale-95 transition-transform uppercase tracking-widest">Enable All Features</button>
-</div>
-</div>
-
-<div id="app" class="max-w-5xl mx-auto p-4 md:p-8 opacity-20 transition-opacity duration-1000">
-<header class="flex flex-col md:flex-row justify-between items-center py-6 mb-8 gap-6 border-b border-slate-200/60">
+<div class="max-w-5xl mx-auto">
+<!-- Header -->
+<header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
 <div class="flex items-center gap-4">
-<div class="p-3 bg-indigo-600 rounded-2xl text-white shadow-xl shadow-indigo-100">
-<i data-lucide="languages" class="w-8 h-8"></i>
+<div class="p-3 bg-indigo-600 rounded-2xl text-white shadow-lg shadow-indigo-100">
+<i class="fa-solid fa-languages text-2xl"></i>
 </div>
 <div>
-<h1 class="text-4xl font-black italic tracking-tighter leading-none text-slate-800">VEP 103</h1>
-<p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-1.5">Vocational English Portal</p>
+<h1 class="text-4xl font-black italic tracking-tighter leading-none uppercase">Unit 2</h1>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">VEP - Listening and Speaking (LS103)</p>
 </div>
 </div>
-<div class="flex bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200">
-<button type="button" onclick="switchTab('bank')" id="tab-bank" class="px-6 md:px-8 py-2.5 rounded-xl text-sm font-bold transition-all tab-active uppercase">Language Bank</button>
-<button type="button" onclick="switchTab('practice')" id="tab-practice" class="px-6 md:px-8 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-slate-600 uppercase">Practice</button>
-</div>
+
+<nav class="flex bg-white p-1 rounded-2xl shadow-sm border border-slate-200">
+<button onclick="switchTab('bank')" id="tab-bank" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-indigo-600 text-white shadow-md">
+<i class="fa-solid fa-book-open text-xs"></i> Language Bank
+</button>
+<button onclick="switchTab('practice')" id="tab-practice" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-slate-600">
+<i class="fa-solid fa-comment-dots text-xs"></i> Conversation Practice
+</button>
+</nav>
 </header>
 
-<!-- LANGUAGE BANK VIEW -->
-<main id="view-bank" class="grid md:grid-cols-2 gap-6 pb-20 fade-in">
-<!-- Populated by JS -->
+<!-- Main Content Area -->
+<main id="view-container" class="animate-in">
+<!-- Content Injected via JavaScript -->
 </main>
-
-<!-- PRACTICE VIEW -->
-<main id="view-practice" class="hidden max-w-4xl mx-auto pb-20 fade-in relative">
-<div class="bg-white rounded-[2.5rem] shadow-2xl border border-white flex flex-col overflow-hidden h-[75vh]">
-
-<!-- TOP FIXED CONTROLS -->
-<div id="active-controls" class="p-6 bg-slate-50 border-b border-slate-100 flex flex-col items-center gap-4 shrink-0">
-<div class="flex items-center gap-6 md:gap-12">
-<button id="btn-listen" onclick="playCurrentLine()" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-slate-400 hover:text-indigo-600 border border-slate-100 transition-all active:scale-90">
-<i data-lucide="volume-2" class="w-6 h-6"></i>
-</button>
-
-<button id="btn-mic" onclick="toggleMic()" class="w-20 h-20 rounded-full bg-indigo-600 shadow-xl shadow-indigo-200 flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95">
-<i data-lucide="mic" class="w-10 h-10"></i>
-</button>
-
-<button id="btn-next" onclick="nextStep()" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-slate-400 hover:text-indigo-600 border border-slate-100 transition-all active:scale-90">
-<i data-lucide="chevron-right" class="w-6 h-6"></i>
-</button>
-</div>
-
-<div id="feedback-display" class="hidden w-full max-w-sm text-center">
-<div class="flex items-center justify-center gap-3">
-<span id="accuracy-text" class="text-lg font-black text-indigo-600">0%</span>
-<div class="w-32 h-1.5 bg-indigo-100 rounded-full overflow-hidden">
-<div id="accuracy-bar" class="h-full bg-indigo-600 transition-all duration-700" style="width: 0%"></div>
-</div>
-</div>
-<p id="transcript-text" class="text-xs italic text-slate-500 mt-1 truncate"></p>
-</div>
-
-<div class="flex w-full justify-between items-center px-4">
-<p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Active Line Highlighted Below</p>
-<button onclick="resetPractice()" class="text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase flex items-center gap-1">
-<i data-lucide="refresh-cw" class="w-2 h-2"></i> Reset
-</button>
-</div>
-</div>
-
-<!-- SCROLLABLE DIALOGUE TABLE -->
-<div id="practice-table" class="flex-1 overflow-y-auto p-6 space-y-6 bg-white">
-<!-- Dialogue rows injected here -->
-</div>
-</div>
-</main>
-</div>
-
-<div id="status-msg" class="hidden fixed top-4 right-4 z-50 p-4 bg-white border border-slate-200 rounded-2xl shadow-xl fade-in flex items-center gap-3 text-sm font-medium text-slate-600">
-<i data-lucide="info" class="w-5 h-5 text-indigo-500"></i>
-<span id="status-text">Status message</span>
 </div>
 
 <script>
-const apiKey = "";
-const TTS_MODEL = "gemini-2.5-flash-preview-tts";
-
-let audioCtx = null;
-let isSpeaking = false;
-let recognition = null;
-let isRecording = false;
-let currentStep = 0;
-
-const LANGUAGE_BANK_DATA = [
+// --- DATA ---
+const DATA = {
+bank: [
 {
 category: "L1: Greeting Guests",
 subsections: [
 { title: "Welcoming", items: ["Welcome to Lux Hotel.", "Welcome. This is the lobby.", "Good morning.", "Hello.", "How are you?"] },
-{ title: "Responding", items: ["Great, thanks. How about you?", "Great, too. Thank you.", "I'm fine too, thank you.", "I'm fine, thank you. And you?"] }
+{ title: "Responding to greetings", items: ["Great, thanks. How about you?", "Great, too. Thank you.", "I'm fine too, thank you.", "I'm fine, thank you. And you?"] }
 ]
 },
 {
@@ -143,19 +79,18 @@ subsections: [
 {
 category: "L3: Introductions",
 subsections: [
-{ title: "Self-Intro", items: ["Good afternoon. I'm Jack. How may I help you?", "I'm Steve, Steve Brown.", "My name's Steve Brown.", "This is Steve Brown. He can help you."] }
+{ title: "Self-Introduction", items: ["Good afternoon. I'm Jack. How may I help you?", "I'm Steve, Steve Brown.", "My name's Steve Brown.", "This is Steve Brown. He can help you."] }
 ]
 },
 {
 category: "L4: Thanking & Responding",
 subsections: [
-{ title: "Thanking", items: ["Thank you (very much).", "Thanks."] },
-{ title: "Respond to thanking", items: ["(It's) My pleasure.", "I'm happy to help.", "No problem.", "Not at all.", "You're welcome."] }
+{ title: "Thanking", items: ["Thank you very much.", "Thank you.", "Thanks.", "Thank you for your help.", "I really appreciate it."] },
+{ title: "Responding to thanking", items: ["It's my pleasure.", "My pleasure.", "I'm happy to help.", "No problem.", "Not at all.", "You're welcome.", "Don't mention it."] }
 ]
 }
-];
-
-const CONVERSATION = [
+],
+conversation: [
 { speaker: "Jack", text: "Good afternoon. I'm Jack. How may I help you?" },
 { speaker: "Ms Parker", text: "Good afternoon. I'd like a luggage parking ticket please." },
 { speaker: "Jack", text: "Of course. May I have your guest pass?" },
@@ -167,209 +102,273 @@ const CONVERSATION = [
 { speaker: "Jack", text: "Don't worry. Here you are." },
 { speaker: "Ms Parker", text: "Oh thank you SO much!" },
 { speaker: "Jack", text: "Don't mention it." }
-];
+]
+};
 
-function showStatus(text, duration = 3000) {
-const el = document.getElementById('status-msg');
-document.getElementById('status-text').innerText = text;
-el.classList.remove('hidden');
-setTimeout(() => el.classList.add('hidden'), duration);
-}
+// --- STATE ---
+let currentTab = 'bank';
+let scores = {};
+let lastTranscripts = {};
+let isRecordingId = null;
+let isPlayingId = null;
+let finalTranscriptBuffer = "";
 
-async function initApp() {
-try {
-audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-if (audioCtx.state === 'suspended') await audioCtx.resume();
-} catch (e) { console.error(e); }
-
+const synth = window.speechSynthesis;
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+
 if (SpeechRecognition) {
 recognition = new SpeechRecognition();
+recognition.continuous = true;
+recognition.interimResults = true;
 recognition.lang = 'en-US';
-recognition.onresult = (event) => displayFeedback(event.results[0][0].transcript);
-recognition.onerror = () => stopMicUI();
-recognition.onend = () => stopMicUI();
+
+recognition.onresult = (event) => {
+let currentSessionText = "";
+for (let i = event.resultIndex; i < event.results.length; ++i) {
+if (event.results[i].isFinal) {
+finalTranscriptBuffer += event.results[i][0].transcript + " ";
+}
+// For UI feedback, combine buffer and interim
+currentSessionText = finalTranscriptBuffer + (event.results[i].isFinal ? "" : event.results[i][0].transcript);
 }
 
-document.getElementById('audio-unlock-overlay').remove();
-document.getElementById('app').classList.remove('opacity-20');
-renderLanguageBank();
-renderDialogueTable();
-updateStepUI();
-lucide.createIcons();
+// Live tracking for accuracy display
+if (isRecordingId) {
+lastTranscripts[isRecordingId] = currentSessionText.trim();
+render();
+}
+};
+
+recognition.onend = () => {
+if (isRecordingId) {
+processResult();
+isRecordingId = null;
+render();
+}
+};
+
+recognition.onerror = (event) => {
+console.error("Recognition Error:", event.error);
+isRecordingId = null;
+render();
+};
 }
 
-async function playRawPcm(base64, sampleRate) {
-const binary = atob(base64);
-const bytes = new Uint8Array(binary.length);
-for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-const int16 = new Int16Array(bytes.buffer);
-const float32 = new Float32Array(int16.length);
-for (let i = 0; i < int16.length; i++) float32[i] = int16[i] / 32768.0;
-const buffer = audioCtx.createBuffer(1, float32.length, sampleRate);
-buffer.getChannelData(0).set(float32);
-const source = audioCtx.createBufferSource();
-source.buffer = buffer;
-source.connect(audioCtx.destination);
-source.start();
-return new Promise(resolve => source.onended = resolve);
+function processResult() {
+if (!isRecordingId) return;
+const targetText = recognition.targetText;
+const capturedText = lastTranscripts[isRecordingId] || "";
+const score = calculateScore(targetText, capturedText);
+scores[isRecordingId] = score;
 }
 
-async function speak(text, speaker, btnEl) {
-if (isSpeaking) return;
-isSpeaking = true;
-const icon = btnEl?.querySelector('i');
-if (btnEl) btnEl.classList.add('audio-loading');
-if (icon) icon.classList.add('audio-playing');
+// --- IMPROVED SCORING LOGIC ---
+function calculateScore(target, input) {
+const clean = (s) => s.toLowerCase().replace(/[^\w\s]/g, "").trim();
+const tWords = clean(target).split(/\s+/).filter(w => w.length > 0);
+const iWords = clean(input).split(/\s+/).filter(w => w.length > 0);
 
-try {
-const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL}:generateContent?key=${apiKey}`, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-contents: [{ parts: [{ text: `${speaker}: ${text}` }] }],
-generationConfig: {
-responseModalities: ["AUDIO"],
-speechConfig: {
-voiceConfig: {
-multiSpeakerVoiceConfig: {
-speakerVoiceConfigs: [
-{ speaker: "Jack", voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } },
-{ speaker: "Ms Parker", voiceConfig: { prebuiltVoiceConfig: { voiceName: "Leda" } } }
-]
-}
-}
-}
-}
-})
-});
-const result = await response.json();
-const part = result.candidates?.[0]?.content?.parts?.[0]?.inlineData;
-if (part) {
-const sampleRate = parseInt(part.mimeType.match(/rate=(\d+)/)?.[1] || 24000);
-await playRawPcm(part.data, sampleRate);
-}
-} catch (e) { console.error(e); } finally {
-isSpeaking = false;
-if (btnEl) btnEl.classList.remove('audio-loading');
-if (icon) icon.classList.remove('audio-playing');
-}
-}
+if (tWords.length === 0) return 0;
+if (iWords.length === 0) return 0;
 
-async function toggleMic() {
-if (isRecording) { recognition.stop(); return; }
-try {
-await navigator.mediaDevices.getUserMedia({ audio: true });
-isRecording = true;
-document.getElementById('btn-mic').classList.add('mic-active');
-recognition.start();
-} catch (err) { showStatus("Microphone access is required."); }
-}
-
-function stopMicUI() {
-isRecording = false;
-document.getElementById('btn-mic').classList.remove('mic-active');
-}
-
-function displayFeedback(transcript) {
-const target = CONVERSATION[currentStep].text.toLowerCase().replace(/[^\w\s]/g, "");
-const input = transcript.toLowerCase().replace(/[^\w\s]/g, "");
-const targetWords = target.split(/\s+/);
-const inputWords = input.split(/\s+/);
-const matches = targetWords.filter(w => inputWords.includes(w)).length;
-const accuracy = Math.round((matches / targetWords.length) * 100);
-
-document.getElementById('feedback-display').classList.remove('hidden');
-document.getElementById('transcript-text').innerText = `"${transcript}"`;
-document.getElementById('accuracy-text').innerText = `${accuracy}%`;
-document.getElementById('accuracy-bar').style.width = `${accuracy}%`;
-if (accuracy > 80) showStatus("Excellent!");
-}
-
-function renderLanguageBank() {
-const container = document.getElementById('view-bank');
-container.innerHTML = LANGUAGE_BANK_DATA.map(cat => `
-<div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-<div class="bg-slate-50 p-5 border-b border-slate-100"><h3 class="font-black text-indigo-600 text-xs uppercase tracking-widest">${cat.category}</h3></div>
-<div class="p-6 space-y-6">
-${cat.subsections.map(sub => `
-<div>
-<h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">${sub.title}</h4>
-<div class="space-y-1">
-${sub.items.map(item => `
-<div class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 transition-colors">
-<span class="text-sm font-medium text-slate-700">${item}</span>
-<button onclick="speak('${item.replace(/'/g, "\\'")}', 'Jack', this)" class="p-2 text-slate-300 hover:text-indigo-600 transition-all"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
-</div>
-`).join('')}
-</div>
-</div>
-`).join('')}
-</div>
-</div>
-`).join('');
-}
-
-function renderDialogueTable() {
-const container = document.getElementById('practice-table');
-container.innerHTML = CONVERSATION.map((line, i) => {
-const isJack = line.speaker === 'Jack';
-return `
-<div class="practice-row flex w-full ${isJack ? 'justify-start' : 'justify-end'}" id="row-${i}">
-<div class="max-w-[80%] flex flex-col ${isJack ? 'items-start' : 'items-end'}">
-<span class="text-[9px] font-black uppercase tracking-[0.2em] mb-1 px-2 ${isJack ? 'text-indigo-500' : 'text-emerald-500'}">
-${line.speaker}
-</span>
-<div class="p-4 rounded-[1.5rem] shadow-sm relative group ${isJack ? 'bg-indigo-50 rounded-tl-none border-l-4 border-indigo-500' : 'bg-emerald-50 rounded-tr-none border-r-4 border-emerald-500'}">
-<p class="text-sm md:text-base font-bold text-slate-700 leading-relaxed">"${line.text}"</p>
-<button onclick="speak('${line.text.replace(/'/g, "\\'")}', '${line.speaker}', this)" class="absolute -right-10 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity">
-<i data-lucide="volume-2" class="w-4 h-4"></i>
-</button>
-</div>
-</div>
-</div>
-`;
-}).join('');
-lucide.createIcons();
-}
-
-function updateStepUI() {
-CONVERSATION.forEach((_, i) => {
-const el = document.getElementById(`row-${i}`);
-if (el) {
-el.classList.toggle('row-active', i === currentStep);
-el.classList.toggle('row-inactive', i !== currentStep);
-if (i === currentStep) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+let matches = 0;
+tWords.forEach(tWord => {
+// Check if target word exists in input (simple fuzzy match)
+if (iWords.some(iWord => iWord === tWord || iWord.includes(tWord))) {
+matches++;
 }
 });
-}
 
-function playCurrentLine() {
-speak(CONVERSATION[currentStep].text, CONVERSATION[currentStep].speaker, document.getElementById('btn-listen'));
-}
-
-function nextStep() {
-if (currentStep < CONVERSATION.length - 1) {
-currentStep++;
-document.getElementById('feedback-display').classList.add('hidden');
-updateStepUI();
-} else { showStatus("Dialogue Complete!"); }
-}
-
-function resetPractice() {
-currentStep = 0;
-document.getElementById('feedback-display').classList.add('hidden');
-updateStepUI();
+return Math.round((matches / tWords.length) * 100);
 }
 
 function switchTab(tab) {
-document.getElementById('view-bank').classList.toggle('hidden', tab !== 'bank');
-document.getElementById('view-practice').classList.toggle('hidden', tab !== 'practice');
-document.getElementById('tab-bank').className = `px-6 md:px-8 py-2.5 rounded-xl text-sm font-bold uppercase transition-all ${tab === 'bank' ? 'tab-active' : 'text-slate-400'}`;
-document.getElementById('tab-practice').className = `px-6 md:px-8 py-2.5 rounded-xl text-sm font-bold uppercase transition-all ${tab === 'practice' ? 'tab-active' : 'text-slate-400'}`;
-lucide.createIcons();
-if (tab === 'practice') updateStepUI();
+currentTab = tab;
+render();
 }
+
+function playText(text, speaker, id) {
+if (synth.speaking) synth.cancel();
+const utter = new SpeechSynthesisUtterance(text);
+utter.pitch = (speaker === "Ms Parker") ? 1.3 : 1.0;
+utter.onstart = () => { isPlayingId = id; render(); };
+utter.onend = () => { isPlayingId = null; render(); };
+synth.speak(utter);
+}
+
+async function toggleMic(id, text) {
+if (isRecordingId === id) {
+recognition.stop();
+return;
+}
+
+if (isRecordingId !== null) {
+recognition.stop();
+}
+
+try {
+await navigator.mediaDevices.getUserMedia({ audio: true });
+finalTranscriptBuffer = "";
+lastTranscripts[id] = "";
+isRecordingId = id;
+recognition.targetText = text;
+recognition.start();
+render();
+} catch (e) {
+alert("Microphone access denied. Please check your browser permissions.");
+}
+}
+
+function render() {
+const container = document.getElementById('view-container');
+const bankBtn = document.getElementById('tab-bank');
+const pracBtn = document.getElementById('tab-practice');
+
+if (currentTab === 'bank') {
+bankBtn.className = "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-indigo-600 text-white shadow-md";
+pracBtn.className = "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-slate-600";
+} else {
+pracBtn.className = "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-indigo-600 text-white shadow-md";
+bankBtn.className = "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-slate-600";
+}
+
+if (currentTab === 'bank') {
+container.innerHTML = `
+<div class="grid md:grid-cols-2 gap-6 pb-12">
+${DATA.bank.map((cat, cIdx) => `
+<div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+<div class="bg-slate-50 p-4 border-b border-slate-100 flex items-center gap-2">
+<i class="fa-solid fa-star text-amber-500 text-xs"></i>
+<h3 class="font-black text-indigo-600 text-[10px] uppercase tracking-widest">${cat.category}</h3>
+</div>
+<div class="p-4 space-y-6">
+${cat.subsections.map((sub, sIdx) => `
+<div>
+<h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 px-2 tracking-[0.1em] border-l-2 border-indigo-200 ml-1">${sub.title}</h4>
+<div class="space-y-1">
+${sub.items.map((item, iIdx) => {
+const id = `bank-${cIdx}-${sIdx}-${iIdx}`;
+const score = scores[id];
+const transcript = lastTranscripts[id];
+const isRec = isRecordingId === id;
+return `
+<div class="p-3 rounded-2xl transition-all border ${score !== undefined ? 'bg-indigo-50/30 border-indigo-100' : 'hover:bg-slate-50 border-transparent'}">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-700">${item}</span>
+<div class="flex items-center gap-1 shrink-0 ml-4">
+<button onclick="playText('${item.replace(/'/g, "\\'")}', 'Jack', '${id}')" class="p-2 rounded-xl transition-all ${isPlayingId === id ? 'text-indigo-600 bg-indigo-100' : 'text-slate-300 hover:text-indigo-600'}">
+<i class="fa-solid fa-volume-high ${isPlayingId === id ? 'fa-beat' : ''}"></i>
+</button>
+<button onclick="toggleMic('${id}', '${item.replace(/'/g, "\\'")}')" class="flex items-center gap-2 px-3 py-2 rounded-xl transition-all text-xs font-black ${isRec ? 'mic-active' : 'text-slate-300 bg-slate-50 hover:text-red-500'}">
+<i class="fa-solid fa-microphone"></i>
+${isRec ? 'SUBMIT' : ''}
+</button>
+</div>
+</div>
+${(isRec && transcript) || score !== undefined ? `
+<div class="mt-3 bg-white/50 p-2 rounded-lg border border-slate-100 animate-in">
+<p class="text-[9px] font-black text-slate-400 uppercase mb-1">What the engine heard:</p>
+<p class="text-xs italic text-slate-600">"${transcript || '...'}"</p>
+${score !== undefined ? `
+<div class="mt-2 flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full bg-indigo-500" style="width: ${score}%"></div>
+</div>
+<span class="text-[10px] font-black text-indigo-600">${score}% Accuracy</span>
+</div>
+` : ''}
+</div>
+` : ''}
+</div>
+`;
+}).join('')}
+</div>
+</div>
+`).join('')}
+</div>
+</div>
+`).join('')}
+</div>
+`;
+} else {
+container.innerHTML = `
+<div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 overflow-hidden mb-12">
+<div class="p-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+<h2 class="text-xl font-black text-slate-800 italic">Conversation Practice</h2>
+<span class="text-[9px] font-black text-slate-500 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm uppercase tracking-widest">
+<i class="fa-solid fa-check-double text-indigo-500 mr-2"></i> Buffer Accumulation Enabled
+</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/50">
+<th class="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Speaker</th>
+<th class="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Phrase</th>
+<th class="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">Action</th>
+<th class="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-right">Results</th>
+</tr>
+</thead>
+<tbody>
+${DATA.conversation.map((line, idx) => {
+const id = `prac-${idx}`;
+const score = scores[id];
+const transcript = lastTranscripts[id];
+const isRec = isRecordingId === id;
+return `
+<tr class="group border-b border-slate-50 hover:bg-slate-50/50 transition-all">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-[9px] font-black px-2 py-1 rounded-md ${line.speaker === 'Jack' ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-200 text-slate-700'} uppercase">
+${line.speaker}
+</span>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm font-bold text-slate-700 italic">"${line.text}"</p>
+${isRec || score !== undefined ? `
+<div class="mt-2 p-2 bg-indigo-50/50 rounded-lg border border-indigo-100 animate-in">
+<p class="text-[8px] font-black text-indigo-400 uppercase tracking-tighter">Recognized Text:</p>
+<p class="text-xs italic text-slate-500 font-medium">"${transcript || 'Listening...'}"</p>
+</div>
+` : ''}
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center justify-center gap-3">
+<button onclick="playText('${line.text.replace(/'/g, "\\'")}', '${line.speaker}', '${id}')"
+class="p-3 rounded-xl bg-white border border-slate-200 shadow-sm transition-all ${isPlayingId === id ? 'text-indigo-600 ring-2 ring-indigo-100' : 'text-slate-400 hover:text-indigo-600'}">
+<i class="fa-solid fa-volume-high"></i>
+</button>
+<button onclick="toggleMic('${id}', '${line.text.replace(/'/g, "\\'")}')"
+class="flex items-center gap-2 px-4 py-3 rounded-xl border transition-all text-[10px] font-black ${isRec ? 'mic-active' : 'bg-white border-slate-200 text-slate-400 hover:text-red-600'}">
+<i class="fa-solid fa-microphone"></i>
+${isRec ? 'SUBMIT' : ''}
+</button>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+${score !== undefined ? `
+<div class="flex flex-col items-end gap-1.5 animate-in">
+<span class="text-xs font-black text-indigo-600">${score}%</span>
+<div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+<div class="h-full bg-indigo-500" style="width: ${score}%"></div>
+</div>
+</div>
+` : `
+<span class="text-[10px] font-bold text-slate-300 italic uppercase tracking-tighter">Click Mic to Start</span>
+`}
+</td>
+</tr>
+`;
+}).join('')}
+</tbody>
+</table>
+</div>
+</div>
+`;
+}
+}
+
+render();
 </script>
 </body>
 </html>
